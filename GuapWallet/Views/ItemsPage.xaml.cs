@@ -18,16 +18,46 @@ namespace GuapWallet.Views
     [DesignTimeVisible(false)]
     public partial class ItemsPage : ContentPage
     {
-        ItemsViewModel viewModel;
+       // ItemsViewModel viewModel;
 
-        public ItemsPage()
+      /*  public ItemsPage()
         {
             InitializeComponent();
 
             BindingContext = viewModel = new ItemsViewModel();
+        }*/
+
+        public Transaction Transaction { get; set; }
+
+        public ItemsPage()
+        {
+            InitializeComponent();
+            Transaction = new Transaction
+            {
+                PrivateKey = "",
+                Sender = "",
+            };
+            BindingContext = this;
+        }
+        // was task changed to void
+        async void  Save_Clicked(object sender, EventArgs e)
+        {
+            Credentials.PublicKey = Transaction.Sender;
+            Credentials.Privatekey = Transaction.PrivateKey;
+
+            await DisplayAlert("Credentials", "Key Updated", "OK");
         }
 
-        async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
+        async void CreateSign_Clicked(object sender, EventArgs e)
+
+        {
+                await Navigation.PushModalAsync(new NavigationPage(new NewItemPage()));
+            }
+        //{
+        //    InitializeComponent()
+        //}
+
+       /* async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
             var item = args.SelectedItem as Item;
             if (item == null)
@@ -50,6 +80,6 @@ namespace GuapWallet.Views
 
             if (viewModel.Items.Count == 0)
                 viewModel.LoadItemsCommand.Execute(null);
-        }
+        }*/
     }
 }
